@@ -42,17 +42,48 @@ class ModelTrainer:
             models = {
                 "Random Forest" : RandomForestRegressor(),
                 "Decision Tree" : DecisionTreeRegressor(),
-                "Gradiet Boosting" : GradientBoostingRegressor(),
+                "Gradient Boosting" : GradientBoostingRegressor(),
                 "Linear Regression": LinearRegression(),
-                "K-Neighbors Classifier" : KNeighborsRegressor(),
-                "XGBClassifier" : XGBRegressor(),
-                "CatBoosting Classifier" : CatBoostRegressor(verbose=False),
-                "AdaBoost Classifier": AdaBoostRegressor(),
+                "XGBRegressor" : XGBRegressor(),
+                "CatBoosting Regressor" : CatBoostRegressor(verbose=False),
+                "AdaBoost Regressor": AdaBoostRegressor()
+            }
+            #for hyperparameter tuning
+            params = {
+                "Decision Tree":{
+                    'max_depth': [None, 5, 10],
+                    'min_samples_split': [2, 5, 10]
+                },
+                "Random Forest":{
+                    'n_estimators': [100, 200, 300],
+                    'max_depth': [None, 5, 10],
+                    'min_samples_split': [2, 5, 10]
+                },
+                "Gradient Boosting":{
+                    'n_estimators': [100, 200, 300],
+                    'max_depth': [3, 5, 10],
+                    'learning_rate': [0.1, 0.05, 0.01]
+                },
+                "Linear Regression":{
+                    #does not have any hyperparameters to tune.
+                },
+                "XGBRegressor":{
+                    'max_depth': [3, 5, 10],
+                    'learning_rate': [0.1, 0.05, 0.01],
+                    'n_estimators': [100, 200, 300]
+                },
+                "CatBoosting Regressor":{
+                    'iterations': [100, 200, 300],
+                    'depth': [4, 6, 8]
+                },
+                "AdaBoost Regressor":{
+                    'n_estimators': [50, 100, 200],
+                    'learning_rate': [0.1, 0.05, 0.01]
+                }
             }
 
-
             model_report:dict = evaluate_models(X_train=X_train,y_train=y_train,
-                                          X_test=X_test,y_test=y_test,models=models)
+                                          X_test=X_test,y_test=y_test,models=models,param=params)
             
             ## To get the best model score from dict
 
