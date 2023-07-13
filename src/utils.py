@@ -27,27 +27,41 @@ def evaluate_models(X_train,y_train,X_test,y_test,models,param):
         
         report = {}
 
-        for i in range (len(list(models))):
-            model = list(models.values())[i]
+       # for i in range (len(list(models))):
+        for model_name, (model, params) in models.items():
+            #model = list(models.values())[i]
             #hypere parameter tuning for each model in the list.
-            para = param[list(models.keys())[i]]
+            #para = param[list(models.keys())[i]]
+            print(f"Hyper tuning the model :{model_name}")
+            
 
-            gs = GridSearchCV(model,para,cv=3)
+            gs = GridSearchCV(model,params,cv=3)
             gs.fit(X_train,y_train)
+            best_params = gs.best_params_
+            best_score = gs.best_score_
+            print(f"Best parameters for {model_name}: {best_params}")
+            print(f"Best score for {model_name}: {best_score}\n")
 
-            model.set_params(**gs.best_params_)
+             # Train the model with best hyperparameters
+            best_model = model.set_params(**best_params)
+            best_model.fit(X_train, y_train)
+
+           # model.set_params(**gs.best_params_)
              #Train the model
-            model.fit(X_train,y_train)
+            #model.fit(X_train,y_train)
 
-            y_train_pred = model.predict(X_train)
-
-            y_test_pred = model.predict(X_test)
+            #Evaluate the model
+            y_train_pred = best_model.predict(X_train)
+            y_test_pred = best_model.predict(X_test)
 
             train_model_score = r2_score(y_train,y_train_pred)
-
             test_model_score = r2_score(y_test,y_test_pred)
+            
+            print(f"Test model score for {model_name}: {test_model_score}")
 
-            report[list(models.keys())[i]] = test_model_score
+            report[model_name] = test_model_score
+
+            #report[list(models.keys())[i]] = test_model_score
 
 
         return report
