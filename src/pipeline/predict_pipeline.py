@@ -17,7 +17,9 @@ class PredictPipeline:
             preprocessor=load_object(file_path=preprocessor_path)
             print("After Loading")
             data_scaled=preprocessor.transform(features)
+            print("After transform")
             preds=model.predict(data_scaled)
+            print("After preds")
             return preds
         
         except Exception as e:
