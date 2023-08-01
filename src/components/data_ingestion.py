@@ -25,17 +25,17 @@ class DataIngestion:
         self.ingestion_config = DataIngestionConfig()#save 3 paths to class variable
 
     def initiate_data_ingestion(self):
-        logging.info("Enter data ingestion method or component")
+        print("Enter data ingestion method or component")
         try:
             #read it from any kind of data source - mongoDB etc.
             df=pd.read_csv('notebook/data/stud.csv')
-            logging.info('Exported data as datafile.')
+            print('Exported data as datafile.')
             
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
 
             df.to_csv(self.ingestion_config.raw_data_path,index=False, header = True)
 
-            logging.info("Train Test split initiated.")
+            print("Train Test split initiated.")
 
             train_set,test_set = train_test_split(df,test_size=0.2,random_state=42)
 
@@ -43,7 +43,7 @@ class DataIngestion:
 
             test_set.to_csv(self.ingestion_config.test_data_path,index=False,header=True)
 
-            logging.info("Ingestion of the data is completed.")
+            print("Ingestion of the data is completed.")
 
             return(
 
