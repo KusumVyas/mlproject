@@ -19,7 +19,7 @@ class PredictPipeline:
             data_scaled=preprocessor.transform(features)
             print("#INSIDE PREDICT PIPELINE# After transform....")
             preds=model.predict(data_scaled)
-            print("#INSIDE PREDICT PIPELINE# After transform....")
+            print("#INSIDE PREDICT PIPELINE# After predicting....")
             return preds
         
         except Exception as e:
