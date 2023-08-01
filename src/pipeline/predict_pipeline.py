@@ -2,7 +2,7 @@ import sys
 import pandas as pd
 from src.exception import CustomException
 from src.utils import load_object
-
+import os
 
 class PredictPipeline:
     def __init__(self):
@@ -12,19 +12,18 @@ class PredictPipeline:
         try:
             model_path=os.path.join("artifacts","model.pkl")
             preprocessor_path=os.path.join('artifacts','preprocessor.pkl')
-            print("Before Loading")
+            print("#INSIDE PREDICT PIPELINE# Before Loading...")
             model=load_object(file_path=model_path)
             preprocessor=load_object(file_path=preprocessor_path)
-            print("After Loading")
+            print("#INSIDE PREDICT PIPELINE# After Loading...")
             data_scaled=preprocessor.transform(features)
-            print("After transform")
+            print("#INSIDE PREDICT PIPELINE# After transform....")
             preds=model.predict(data_scaled)
-            print("After preds")
+            print("#INSIDE PREDICT PIPELINE# After transform....")
             return preds
         
         except Exception as e:
             raise CustomException(e,sys)
-
 
 
 class CustomData:
